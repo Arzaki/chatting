@@ -1,0 +1,62 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    
+}
+
+main{
+    position:absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%); 
+    width: 80%;
+    overflow: hidden;
+
+
+}
+
+div.container{
+    padding:20px;
+}
+
+div.users-window{
+    width: 350px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    
+}
+
+div.users-head{
+    /* @include flexing(row,space-between,center); */
+    margin-bottom: 15px;
+}
+
+div.chat-window{
+    width: 100%;
+    border-radius:10px;
+
+}
+
+div.chats{
+    min-height: 65vh;
+    padding: 20px;
+}
+
+div.outgoing{
+    margin-left: auto;
+    color:white;
+    background-color: lightblue;
+    border-radius: 50px 10px 10px 50px;
+}
+
+div.incoming{
+    margin-left: auto;
+    color:white;
+    background-color: lightgreen;
+    border-radius: 10px 50px 50px 10px;
+}
+div.user-input{
+    padding: 20px;
+    
+}
