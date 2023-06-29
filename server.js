@@ -19,21 +19,31 @@ var users={};
 
 io.on('connection',(socket)=>{
     socket.on("new-user-joined",(username)=>{
-        users[socket.id] = username;
+        // users[userName] = username; //the key has a capital N
+        // users[socketID] = socket.id;
+        users[socket.id] = {
+            "userName": username,
+            "socketID": socket.id
+        };
         socket.broadcast.emit('user-connected',username);
         io.emit("user-list",users);
     })
 
     socket.on('disconnect',()=>{ 
-        socket.broadcast.emit('user-disconnected',users = users[socket.id])
+        socket.broadcast.emit('user-disconnected',users = users[userName])
         delete users[socket.id];
         io.emit('user-list',users);
 
     })
 
     socket.on('message',(data)=>{
-        socket.broadcast.emit('message',{user:data.user,msg:data.msg})
-        console.log(data)
+        // socket.broadcast.emit('message',{user:data.user,msg:data.msg})
+        // console.log(data)
+
+        // io.to(data.socketID).emit("messageToBeReceived", data.msg);
+        io.sockets.in(data.socketID).emit('receiveMessage', data);
+        // io.sockets.sockets[data.socketID].emit('receiveMessage', data);
+
     })
 });
 

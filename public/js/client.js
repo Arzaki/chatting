@@ -1,5 +1,4 @@
 
-
 const socket = io();
 
 var username;
@@ -8,7 +7,7 @@ var users_list = document.querySelector('.users-list');
 var users_count = document.querySelector('.users-count');
 var msg_send = document.querySelector('#user-send');
 var user_msg = document.querySelector('#user-msg');
-
+var currentUserWeAreChattingWith;
 
 do{
     username = prompt("Enter your username");
@@ -41,10 +40,20 @@ socket.on('user-list',(users)=>{
     users_arr = Object.values(users);
  
     for(i= 0;i<users_arr.length;i++){
-        let p  = document.createElement('p');
-        p.innerText = users_arr[i];
-        users_list.appendChild(p);
+        let button  = document.createElement('button');
+        // button.innerText = users_arr[i];
+        // button.innerText = users_arr[socket.id[userName]];
+        button.innerText = users_arr[i].userName;
+        button.value = users_arr[i].socketID;
+        // button.onclick = openChatWindow();
+        button.addEventListener("click",openChatWindow);
+        button.myParam = users_arr[i].socketID;
+
+
+        users_list.appendChild(button);
     }
+
+    console.log(socket.id)
 
     users_count.innerHTML = users_arr.length;
 })
@@ -54,7 +63,9 @@ socket.on('user-list',(users)=>{
 msg_send = addEventListener('click',()=>{  
     let data = {
         user: username,
-        msg: user_msg.value
+        msg: user_msg.value,
+        // socketID: button.value  //socket id of the user the message is going to be sent
+        socketID: currentUserWeAreChattingWith
     };
 
     if(user_msg.value != ''){
@@ -64,6 +75,12 @@ msg_send = addEventListener('click',()=>{
 
     }
 });
+
+//recieving message
+socket.on('receiveMessage',(data)=>{
+    appendMessage(data,'incoming')
+    console.log("Message has been received!")
+})
 
 function appendMessage(data, status){
     let div = document.createElement('div')
@@ -79,6 +96,22 @@ function appendMessage(data, status){
     
 }
 
-socket.on('message',(data)=>{
-    appendMessage(data,'incoming')
-})
+// socket.on('message',(data)=>{
+//     appendMessage(data,'incoming')
+// })
+
+
+
+// opening chat window of a user after clicking on them
+
+function openChatWindow(evt){
+
+    if(currentUserWeAreChattingWith != evt.currentTarget.myParam){
+
+        chats.innerHTML = '';
+        currentUserWeAreChattingWith = evt.currentTarget.myParam;
+        //try storing the the data in a json format
+        console.log("This is working")
+    }
+}
+
